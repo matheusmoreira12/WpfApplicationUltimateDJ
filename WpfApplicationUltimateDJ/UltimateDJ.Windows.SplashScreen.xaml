@@ -1,0 +1,45 @@
+﻿<Window x:Class="UltimateDJ.Windows.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:WpfApplicationUltimateDJ"
+        xmlns:controls="clr-namespace:UltimateDJ.Controls"
+        mc:Ignorable="d"
+        Height="320" Width="480"
+        ShowInTaskbar="True" Topmost="True" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" Background="Transparent">
+    <Control.Resources>
+        <Storyboard x:Key="OpenFadeIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.654"/>
+        </Storyboard>
+    </Control.Resources>
+
+    <Window.Style>
+        <Style TargetType="Window">
+            <Style.Triggers>
+                <Trigger Property="IsVisible" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource OpenFadeIn}"/>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+
+    <Border CornerRadius="5" Background="Gray">
+        <Grid>
+            <controls:ReportBugMessageLabel x:Name="TooLongMessageLabel" ReportUri=""
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     Foreground="Gainsboro" Visibility="Hidden">
+                The application is taking unusually long to start.</controls:ReportBugMessageLabel>
+
+            <Label Height="25" Margin="0 0 0 11" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                   Foreground="Gainsboro">Loading module ""...</Label>
+
+            <controls:BarIndicator Value=".5"
+                                   Height="5" VerticalAlignment="Bottom" Margin="5 0 5 5"
+                                   Background="Black"></controls:BarIndicator>
+        </Grid>
+    </Border>
+</Window>

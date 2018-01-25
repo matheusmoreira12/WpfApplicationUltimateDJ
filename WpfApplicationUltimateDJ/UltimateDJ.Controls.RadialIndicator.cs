@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,108 +16,122 @@ using System.Windows.Shapes;
 
 namespace UltimateDJ.Controls
 {
+    public class RadialIndicatorRenderer : Renderer
+    {
+        protected override Geometry GetControlShape()
+        {
+            RadialIndicator radialIndicator = (RadialIndicator)Target;
+
+            double w = radialIndicator.ActualWidth, h = radialIndicator.ActualHeight,
+                cx = w / 2, cy = h / 2,
+                rx = w / 2, ry = h / 2;
+
+            EllipseGeometry eg0 = new EllipseGeometry(new Point(cx, cy), rx, ry);
+            EllipseGeometry eg1 = new EllipseGeometry(new Point(cx, cy),
+                rx - radialIndicator.RingThickness, ry - radialIndicator.RingThickness);
+
+            return new CombinedGeometry(GeometryCombineMode.Exclude, eg0, eg1);
+        }
+
+        protected override void RenderBackground(DrawingContext drawingContext)
+        {
+            RadialIndicator radialIndicator = (RadialIndicator)Target;
+
+            drawingContext.DrawGeometry(radialIndicator.Background, new Pen(), GetControlShape());
+        }
+
+        protected override void RenderBorder(DrawingContext drawingContext)
+        {
+            RadialIndicator radialIndicator = (RadialIndicator)Target;
+
+            drawingContext.DrawGeometry(Brushes.Transparent, new Pen(radialIndicator.BorderBrush, radialIndicator.BorderThickness), 
+                GetControlShape());
+        }
+
+        private PathGeometry getIndicatorPie(double cx, double cy, double rx, double ry, double a, double s)
+        {
+            double ar = a / 180.0 * Math.PI, sr = s / 180.0 * Math.PI,
+                x0 = cx + Math.Cos(ar) * rx, y0 = cy - Math.Sin(ar) * ry,
+                x1 = cx + Math.Cos(ar + sr) * rx, y1 = cy - Math.Sin(ar + sr) * ry;
+
+            PathGeometry pg = new PathGeometry();
+            pg.FillRule = FillRule.EvenOdd;
+
+            PathFigure pf = new PathFigure(new Point(cx, cy), new PathSegment[] {
+                new LineSegment(new Point(x0, y0), false),
+                new ArcSegment(new Point(x1, y1), new Size(rx, ry), 0, Math.Abs(s) > 180,
+                s <= 0 ? SweepDirection.Clockwise : SweepDirection.Counterclockwise, false)
+            }, true);
+
+            pg.Figures.Add(pf);
+
+            return pg;
+        }
+
+        protected override void RenderContent(DrawingContext drawingContext)
+        {
+            RadialIndicator radialIndicator = (RadialIndicator)Target;
+
+            double w = radialIndicator.ActualWidth, h = radialIndicator.ActualHeight,
+                cx = w / 2, cy = h / 2,
+                rx = w / 2, ry = h / 2,
+                val = radialIndicator.GetPercentage() / 100;
+
+            Geometry ring = GetControlShape(),
+                pie = getIndicatorPie(cx, cy, rx, ry, 90,
+                (radialIndicator.Direction == IndicatorDirection.Backward ? val : -val * 360.0));
+
+            drawingContext.DrawGeometry(radialIndicator.Foreground, new Pen(), 
+                new CombinedGeometry(GeometryCombineMode.Intersect, ring, pie));
+        }
+
+        public RadialIndicatorRenderer(RadialIndicator target) : base(target)
+        {
+        }
+    }
+
     /// <summary>
     /// Interaction logic for UltimateDJ.xaml
     /// </summary>
-    public partial class RadialIndicator : FrameworkElement
+    public partial class RadialIndicator : Indicator
     {
         static RadialIndicator()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RadialIndicator), new FrameworkPropertyMetadata(typeof(RadialIndicator)));
         }
 
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.RegisterAttached("Value", typeof(double), typeof(RadialIndicator));
+        protected RadialIndicatorRenderer Renderer;
 
-        public static readonly DependencyProperty MinProperty =
-            DependencyProperty.RegisterAttached("Min", typeof(double), typeof(RadialIndicator));
+        #region Visual Properties
 
-        public static readonly DependencyProperty MaxProperty =
-            DependencyProperty.RegisterAttached("Max", typeof(double), typeof(RadialIndicator));
+        public static readonly DependencyProperty RingThicknessProperty =
+            DependencyProperty.RegisterAttached("RingThickness", typeof(double), typeof(RadialIndicator),
+            new PropertyMetadata(5.0));
 
-        public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.RegisterAttached("Foreground", typeof(Brush), typeof(RadialIndicator), 
-                new PropertyMetadata(Brushes.Black));
-
-        public double Value
+        /// <summary>
+        /// Gets or sets the indicator ring thickness.
+        /// </summary>
+        public double RingThickness
         {
-            set
-            {
-                if (value > Max)
-                    value = Max - double.Epsilon;
-                else if (value < Min)
-                    value = Min + double.Epsilon;
-
-                SetValue(ValueProperty, value);
-            }
-            get { return (double)GetValue(ValueProperty); }
+            set { SetValue(RingThicknessProperty, value); }
+            get { return (double)GetValue(RingThicknessProperty); }
         }
 
-        public double Min
-        {
-            set
-            {
-                if (value >= Max)
-                    value = Max - double.Epsilon;
-
-                SetValue(MinProperty, value);
-            }
-
-            get { return (double)GetValue(MinProperty); }
-        }
-
-        public double Max
-        {
-            set
-            {
-                if (value <= Min)
-                    value = Min - double.Epsilon;
-
-                SetValue(MaxProperty, value);
-            }
-
-            get { return (double)GetValue(MaxProperty); }
-        }
-
-        public Brush Foreground
-        {
-            set { SetValue(ForegroundProperty, value); }
-            get { return (Brush)GetValue(ForegroundProperty); }
-        }
-
-        public double GetPercentage()
-        {
-            return (Value - Min) / (Max - Min) * 100;
-        }
-
-        protected PathGeometry getIndicatorPie(double cx, double cy, double rx, double ry, double a, double s)
-        {
-            double ar = a / 180.0 * Math.PI, sr = s / 180.0 * Math.PI,
-                x0 = cx + Math.Cos(ar) * rx, y0 = cy - Math.Sin(ar) * ry,
-                x1 = cx + Math.Cos(ar + sr) * rx, y1 = cy - Math.Sin(ar + sr) * ry;
-
-            PathGeometry geometry = new PathGeometry();
-            geometry.FillRule = FillRule.EvenOdd;
-
-            PathFigure pf = new PathFigure();
-            pf.StartPoint = new Point(x0, y0);
-            pf.Segments.Add(new ArcSegment(new Point(x1, y1), new Size(rx, ry), 0, Math.Abs(s) > 180,
-                s <= 0 ? SweepDirection.Clockwise : SweepDirection.Counterclockwise, true));
-            geometry.Figures.Add(pf);
-
-            return geometry;
-        }
+        #endregion
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
 
-            double rx = ActualWidth / 2.0,
-                ry = ActualHeight / 2.0,
-                valueAngle = -(Value - Min) / (Max - Min) * 360.0;
+            double rx = ActualWidth / 2.0, ry = ActualHeight / 2.0,
+                cx = rx, cy = ry;
 
-            drawingContext.DrawGeometry(Brushes.Transparent, new Pen(Foreground, 11), getIndicatorPie(rx, ry,
-                rx - 5.5, ry - 5.5, 90, valueAngle));
+            Renderer.Render(drawingContext);
+        }
+
+        public RadialIndicator()
+        {
+            Renderer = new RadialIndicatorRenderer(this);
         }
     }
 }

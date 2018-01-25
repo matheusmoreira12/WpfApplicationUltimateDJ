@@ -51,14 +51,14 @@ namespace UltimateDJ.Controls
 
         private void updateBPM()
         {
-            BPMLabel.Content = string.Format("{0:0.0}", BPM);
+            BPMLabel.Content = Math.Round(BPM, 1).ToString();
         }
 
         private void updatePitchShift()
         {
             string signStr = PitchShift > 0 ? "+" : PitchShift < 0 ? "-" : "";
 
-            PitchShiftLabel.Content = signStr + string.Format("{0:0.0}", Math.Abs(PitchShift));
+            PitchShiftLabel.Content = signStr + Math.Round(Math.Abs(PitchShift), 1).ToString();
         }
         #endregion
 
@@ -132,7 +132,6 @@ namespace UltimateDJ.Controls
             get { return (double)GetValue(PitchShiftProperty); }
             set
             {
-
                 SetValue(PitchShiftProperty, value);
             }
         }

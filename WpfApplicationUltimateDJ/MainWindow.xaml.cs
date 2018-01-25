@@ -20,8 +20,20 @@ namespace WpfApplicationUltimateDJ
     /// </summary>
     public partial class MainWindow : Window
     {
+        public System.Windows.Forms.Timer Timer1;
+
+        public void Timer1_OnTick(object sender, EventArgs args)
+        {
+            TurntableVynil1.Value+=.01;
+        }
+
         public MainWindow()
         {
+            Timer1 = new System.Windows.Forms.Timer();
+            Timer1.Interval = 10;
+            Timer1.Tick += Timer1_OnTick;
+            Timer1.Enabled = true;
+
             InitializeComponent();
         }
     }

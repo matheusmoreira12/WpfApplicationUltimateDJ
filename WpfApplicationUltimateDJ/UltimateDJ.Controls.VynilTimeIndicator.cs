@@ -22,14 +22,12 @@ namespace UltimateDJ.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(VinylTimeIndicator), new FrameworkPropertyMetadata(typeof(VinylTimeIndicator)));
         }
 
-        protected LineGeometry getPointerLine(double rx, double ry, double angle)
+        protected LineGeometry getPointerLine(double cx, double cy, double rx, double ry, double a)
         {
-            double x0 = rx,
-                y0 = ry,
-                x1 = x0 + Math.Cos(angle) * rx,
-                y1 = y0 - Math.Sin(angle) * ry;
+            double ar = a / 180 * Math.PI,
+                x1 = cx + Math.Cos(ar) * rx, y1 = cy - Math.Sin(ar) * ry;
 
-            return new LineGeometry(new Point(x0, y0), new Point(x1, y1));
+            return new LineGeometry(new Point(cx, cy), new Point(x1, y1));
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -38,11 +36,13 @@ namespace UltimateDJ.Controls
 
             double rx = ActualWidth / 2.0,
                 ry = ActualHeight / 2.0,
-                pointerAngle = -(Value % 2) / 2 * 360.0;
+                pa = -((Value % 2.0) / 2.0 * 360.0);
 
             drawingContext.DrawGeometry(Foreground, new Pen(Brushes.Transparent, 0), new EllipseGeometry(new Point(rx, ry),
                 5.5, 5.5));
-            drawingContext.DrawGeometry(Foreground, new Pen(Brushes.Black, 7), getPointerLine(rx, ry, pointerAngle + 90));
+
+            drawingContext.PushOpacity(0.5);
+            drawingContext.DrawGeometry(Brushes.Transparent, new Pen(Foreground, 7), getPointerLine(rx, ry, rx, ry, pa + 90));
         }
     }
 }

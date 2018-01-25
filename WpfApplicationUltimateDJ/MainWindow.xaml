@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:WpfApplicationUltimateDJ"
         xmlns:controls="clr-namespace:UltimateDJ.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+        Background="Gray">
     <Grid>
-        <controls:TurntableVinyl BPM="60" PitchShift="1.0" 
+        <controls:TurntableVinyl x:Name="TurntableVynil1" BPM="60" PitchShift="-5" 
                                  Value="90" Min="0" Max="120"  
                                  Width="160" Height="160"></controls:TurntableVinyl>
     </Grid>

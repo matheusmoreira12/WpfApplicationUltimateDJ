@@ -1,0 +1,38 @@
+﻿<Label x:Class="UltimateDJ.Controls.ReportBugMessageLabel"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+       xmlns:local="clr-namespace:UltimateDJ.Controls"
+       xmlns:iconpkg="clr-namespace:UltimateDJ.IconPackManagement"
+       mc:Ignorable="d"
+       Name="reportBugMessageLabel">
+    <Label.Style>
+        <Style TargetType="Label">
+            <Style.Setters>
+                <Setter Property="Padding" Value="2"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="BorderBrush" Value="DimGray"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Foreground" Value="Gainsboro"/>
+            </Style.Setters>
+        </Style>
+    </Label.Style>
+    <Label.Template>
+        <ControlTemplate TargetType="Label">
+            <Border CornerRadius="3" Background="{Binding Background, ElementName=reportBugMessageLabel }"
+                    BorderBrush="{Binding BorderBrush, ElementName=reportBugMessageLabel }"
+                    BorderThickness="{Binding BorderThickness, ElementName=reportBugMessageLabel }"
+                    Padding="{Binding Padding, ElementName=reportBugMessageLabel }">
+                <StackPanel>
+                    <ContentPresenter HorizontalAlignment="Center"/>
+                    <TextBlock HorizontalAlignment="Center">
+                        <iconpkg:IconGlyph Width="13" Height="13" PackResourceName="default_icons" IconName="default-icons\information-italic.png"/>
+                        If you frequently see this message,
+                        <Hyperlink NavigateUri="{Binding ReportUri, ElementName=reportBugMessageLabel}">report a problem.</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+    </Label.Template>
+</Label>

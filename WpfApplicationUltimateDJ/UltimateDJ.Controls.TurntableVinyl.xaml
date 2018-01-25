@@ -10,20 +10,25 @@
              FontFamily="Arial Rounded MT Bold"
              FontSize="14"
              Name="VinylTurntable">
-    <Border CornerRadius="95" Background="White" BorderBrush="Black" BorderThickness="1">
+    <Border CornerRadius="95" Background="White" BorderThickness="2" BorderBrush="DimGray">
         <Grid>
-            <local:VinylTimeIndicator x:Name="Indicator" Value="{Binding Value, ElementName=VinylTurntable}" 
-                                      Max="{Binding Max, ElementName=VinylTurntable}" Min="{Binding Min, ElementName=VinylTurntable}"/>
+            <local:VinylTimeIndicator Value="{Binding Value, ElementName=VinylTurntable}" 
+                                      Max="{Binding Max, ElementName=VinylTurntable}" Min="{Binding Min, ElementName=VinylTurntable}"
+                                      BorderThickness="0" RingThickness="11"
+                                      Background="Transparent" Foreground="Black"/>
             <local:RadialIndicator Margin="11 11" Min="0" Max="100" Value="{Binding PitchShift, ElementName=VinylTurntable}"
-                                   Foreground="Firebrick"></local:RadialIndicator>
+                                   BorderThickness="0" RingThickness="11"
+                                   Background="Transparent" Foreground="Firebrick"></local:RadialIndicator>
             <local:IndicatorLabel x:Name="BPMLabel" Unit="BPM"
                                   HorizontalAlignment="Right" Height="27" Margin="0 0 20 30">N/A</local:IndicatorLabel>
             <local:IndicatorLabel x:Name="PitchShiftLabel" Unit="%" 
-                                  HorizontalAlignment="Left" Height="27" Margin="20 0 0 30">N/A</local:IndicatorLabel>
+                                  HorizontalAlignment="Left" Height="27" Margin="20 0 0 30">0</local:IndicatorLabel>
             <Label Name="ElapsedLabel" 
-                   HorizontalAlignment="Center" Height="27" Margin="0 30 0 0">N/A</Label>
+                   HorizontalAlignment="Center" Height="27" Margin="0 30 0 0"
+                   FontSize="16">N/A</Label>
             <Label Name="RemainingLabel" 
-                   HorizontalAlignment="Center"  Opacity="0.7" Height="27" Margin="0 70 0 0">N/A</Label>
+                   HorizontalAlignment="Center" Height="27" Margin="0 70 0 0"
+                   FontSize="16">N/A</Label>
         </Grid>
     </Border>
 </UserControl>

@@ -1,16 +1,18 @@
 ﻿<Label x:Class="UltimateDJ.Controls.IndicatorLabel"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UltimateDJ.Controls"
-             mc:Ignorable="d" Name="MainLabel">
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+       xmlns:local="clr-namespace:UltimateDJ.Controls"
+       mc:Ignorable="d"
+       Name="indicatorLabel">
     <Label.Template>
         <ControlTemplate TargetType="Label">
             <StackPanel Orientation="Horizontal">
                 <ContentPresenter VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Unit, ElementName=MainLabel}" 
-                           Margin="2 0 0 0" VerticalAlignment="Center"  Opacity="0.7"/>
+                <TextBlock Text="{Binding Unit, ElementName=indicatorLabel}" 
+                           Margin="2 0 0 0" VerticalAlignment="Center" 
+                           FontSize="10"/>
             </StackPanel>
         </ControlTemplate>
     </Label.Template>
