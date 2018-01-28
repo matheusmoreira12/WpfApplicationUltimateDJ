@@ -54,6 +54,30 @@ namespace UltimateDJ.Windows
     /// </summary>
     public partial class SplashScreen : Window
     {
+        public static readonly DependencyProperty SplashImageProperty = DependencyProperty.RegisterAttached("SplashImage", 
+            typeof(ImageSource), typeof(SplashScreen), new PropertyMetadata(new BitmapImage()));
+
+        /// <summary>
+        /// Gets or sets the splash image shown in this splash screen.
+        /// </summary>
+        public ImageSource SplashImage
+        {
+            get { return (ImageSource)GetValue(SplashImageProperty); }
+            set { SetValue(SplashImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProgressProperty = DependencyProperty.RegisterAttached("Progress",
+            typeof(double), typeof(SplashScreen), new PropertyMetadata(0.0));
+
+        /// <summary>
+        /// Gets or sets the progress shown in this splash screen.
+        /// </summary>
+        public double Progress
+        {
+            get { return (double)GetValue(ProgressProperty); }
+            set { SetValue(ProgressProperty, value); }
+        }
+
         private DelayTimer TooLongDelayTimer;
 
         private void TooLongDelayTimer_onDone(object sender, EventArgs args)
@@ -65,7 +89,9 @@ namespace UltimateDJ.Windows
         {
             InitializeComponent();
 
-            TooLongDelayTimer = new DelayTimer(TimeSpan.FromSeconds(5));
+            Title = "Loading...";
+
+            TooLongDelayTimer = new DelayTimer(TimeSpan.FromSeconds(30));
             TooLongDelayTimer.Done += TooLongDelayTimer_onDone;
             TooLongDelayTimer.Start();
         }

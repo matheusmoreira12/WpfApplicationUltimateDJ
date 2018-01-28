@@ -1,4 +1,5 @@
 ﻿<Window x:Class="UltimateDJ.Windows.SplashScreen"
+        Name="splashScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,7 +9,7 @@
         mc:Ignorable="d"
         Height="320" Width="480"
         ShowInTaskbar="True" Topmost="True" WindowStyle="None" WindowStartupLocation="CenterScreen"
-        AllowsTransparency="True" Background="Transparent">
+        AllowsTransparency="True" Background="Gray">
     <Control.Resources>
         <Storyboard x:Key="OpenFadeIn">
             <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.654"/>
@@ -27,19 +28,28 @@
         </Style>
     </Window.Style>
 
-    <Border CornerRadius="5" Background="Gray">
-        <Grid>
-            <controls:ReportBugMessageLabel x:Name="TooLongMessageLabel" ReportUri=""
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Border CornerRadius="5" Background="{TemplateBinding Window.Background}" BorderBrush="{TemplateBinding Window.BorderBrush}"
+                    BorderThickness="{TemplateBinding Window.BorderThickness}">
+                    <ContentPresenter></ContentPresenter>
+            </Border>
+        </ControlTemplate>
+    </Window.Template>
+
+    <Grid>
+        <Image Source="{Binding SplashImage, ElementName=splashScreen}"/>
+
+        <controls:ReportBugMessageLabel x:Name="TooLongMessageLabel" ReportUri=""
                                      HorizontalAlignment="Center" VerticalAlignment="Center"
                                      Foreground="Gainsboro" Visibility="Hidden">
-                The application is taking unusually long to start.</controls:ReportBugMessageLabel>
+            The application is taking unusually long to start.</controls:ReportBugMessageLabel>
 
-            <Label Height="25" Margin="0 0 0 11" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                   Foreground="Gainsboro">Loading module ""...</Label>
+        <Label Height="25" Margin="0 0 0 11" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                   Foreground="Gainsboro" Content="{Binding Title, ElementName=splashScreen}"/>
 
-            <controls:BarIndicator Value=".5"
+        <controls:BarIndicator Value="{Binding Progress, ElementName=splashScreen}" Min="0" Max="100"
                                    Height="5" VerticalAlignment="Bottom" Margin="5 0 5 5"
                                    Background="Black"></controls:BarIndicator>
-        </Grid>
-    </Border>
+    </Grid>
 </Window>

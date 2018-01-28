@@ -17,7 +17,7 @@ namespace WpfApplicationUltimateDJ
     /// <summary>
     /// Interaction logic for SplashScreenWindow.xaml
     /// </summary>
-    public partial class SplashScreenWindow : Window
+    public partial class SplashScreenWindow : UltimateDJ.Windows.SplashScreen
     {
         public SplashScreenWindow()
         {

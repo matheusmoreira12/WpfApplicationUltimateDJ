@@ -4,7 +4,6 @@
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
        xmlns:local="clr-namespace:UltimateDJ.Controls"
-       xmlns:iconpkg="clr-namespace:UltimateDJ.IconPackManagement"
        mc:Ignorable="d"
        Name="reportBugMessageLabel">
     <Label.Style>
@@ -27,7 +26,6 @@
                 <StackPanel>
                     <ContentPresenter HorizontalAlignment="Center"/>
                     <TextBlock HorizontalAlignment="Center">
-                        <iconpkg:IconGlyph Width="13" Height="13" PackResourceName="default_icons" IconName="default-icons\information-italic.png"/>
                         If you frequently see this message,
                         <Hyperlink NavigateUri="{Binding ReportUri, ElementName=reportBugMessageLabel}">report a problem.</Hyperlink>
                     </TextBlock>

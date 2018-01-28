@@ -61,7 +61,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="UltimateDJ.IconPackManagement.cs" />
+    <Compile Include="UltimateDJ.CompressedResources.Markup.cs" />
+    <Compile Include="UltimateDJ.Controls.CuePointDisplay.cs" />
+    <Compile Include="UltimateDJ.CompressedResources.cs" />
     <Compile Include="UltimateDJ.Controls.BarIndicator.cs" />
     <Compile Include="UltimateDJ.Controls.Indicator.cs" />
     <Compile Include="UltimateDJ.Controls.Renderer.cs" />
@@ -130,7 +132,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="default-icons.zip" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
